@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalender Widget Builder – von Dilara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7A2441;
+            --primary-deep: #5c1a30;
+            --primary-light: #f9eef1;
+            --secondary: #1A2461;
+            --pale-pink: #F3D6DA;
+            --azure: #D1E3FC;
+            --alabaster: #EFEBE7;
+            --black: #2B2B35;
+            --text: #2B2B35;
+            --text-soft: #7a7380;
+            --white: #ffffff;
+            --border: #e0d9d4;
+            --shadow: 0 4px 30px rgba(43, 43, 53, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--alabaster);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(160deg, #f9eef1 0%, var(--alabaster) 55%, #e8eef9 100%);
+            padding: 80px 24px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 320px; height: 320px;
+            background: radial-gradient(circle, rgba(122,36,65,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: -40px;
+            width: 220px; height: 220px;
+            background: radial-gradient(circle, rgba(26,36,97,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 6vw, 58px);
+            font-weight: 400;
+            line-height: 1.15;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 16px;
+            font-weight: 300;
+            color: var(--text-soft);
+            max-width: 440px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Layout */
+        .main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .main { grid-template-columns: 1fr; gap: 32px; }
+            .preview-col { order: -1; }
+        }
+
+        /* Panel */
+        .panel {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 28px;
+            color: var(--text);
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-group { margin-bottom: 24px; }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            margin-bottom: 10px;
+        }
+
+        /* Week toggle */
+        .week-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .week-option {
+            padding: 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-soft);
+            transition: all 0.2s;
+        }
+
+        .week-option.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* Color rows */
+        .color-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .color-row:last-child { border-bottom: none; }
+
+        .color-label {
+            font-size: 14px;
+            color: var(--text);
+            font-weight: 300;
+        }
+
+        .color-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-hex {
+            font-size: 12px;
+            color: var(--text-soft);
+            font-family: 'Courier New', monospace;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        input[type="color"] {
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 2px;
+            background: none;
+        }
+
+        /* Toggles */
+        .toggle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text);
+            font-weight: 300;
+            transition: border-color 0.2s;
+        }
+
+        .toggle-item:has(input:checked) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .switch {
+            position: relative;
+            width: 36px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .switch-slider {
+            position: absolute;
+            inset: 0;
+            background: #ddd;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .switch-slider::before {
+            content: '';
+            position: absolute;
+            width: 12px; height: 12px;
+            left: 3px; bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        input:checked + .switch-slider { background: var(--primary); }
+        input:checked + .switch-slider::before { transform: translateX(18px); }
+
+        /* Preview */
+        .preview-col {
+            position: sticky;
+            top: 24px;
+        }
+
+        .preview-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .preview-frame-wrapper {
+            background: linear-gradient(135deg, #f0ebe6 0%, #e8eef9 100%);
+            border-radius: 20px;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 340px;
+        }
+
+        #preview-frame {
+            width: 100%;
+            max-width: 320px;
+            height: 300px;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(43,43,53,0.14);
+        }
+
+        /* Generate button */
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-deep) 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.25s;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 20px rgba(122,36,65,0.25);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(122,36,65,0.35);
+        }
+
+        /* Result */
+        .result {
+            display: none;
+            margin-top: 20px;
+            padding: 24px;
+            background: var(--primary-light);
+            border: 1.5px solid var(--pale-pink);
+            border-radius: 16px;
+        }
+
+        .result.show { display: block; }
+
+        .result-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .url-box {
+            background: white;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: var(--text-soft);
+            word-break: break-all;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .copy-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--text);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover { background: #3d3a45; }
+        .copy-btn.copied { background: var(--secondary); }
+
+        .instructions {
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-soft);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .instructions strong { color: var(--text); font-weight: 500; }
+        .instructions code {
+            background: white;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: 1px solid var(--border);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 24px 60px;
+            color: var(--text-soft);
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <div class="hero-tag">Notion Widget</div>
+        <h1>Dein Kalender,<br><em>dein Stil.</em></h1>
+        <p>Gestalte deinen persönlichen Notion-Kalender – ruhig, clean und ganz in deinen Farben.</p>
+    </div>
+
+    <div class="main">
+
+        <div class="settings-col">
+            <div class="panel">
+                <div class="panel-title">Einstellungen</div>
+
+                <div class="form-group">
+                    <div class="form-label">Woche beginnt mit</div>
+                    <div class="week-toggle">
+                        <div class="week-option" data-day="sunday">Sonntag</div>
+                        <div class="week-option active" data-day="monday">Montag</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-label">Anzeige</div>
+                    <div class="toggle-grid">
+                        <div class="toggle-item">
+                            <span>Heute-Button</span>
+                            <label class="switch">
+                                <input type="checkbox" id="show-today-btn">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-item">
+                            <span>Heute markieren</span>
+                            <label class="switch">
+                                <input type="checkbox" id="highlight-today" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-item">
+                            <span>Rahmen</span>
+                            <label class="switch">
+                                <input type="checkbox" id="show-border">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-item">
+                            <span>Navigation</span>
+                            <label class="switch">
+                                <input type="checkbox" id="show-navigation" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-label">Farben</div>
+                    <div class="color-row">
+                        <span class="color-label">Akzentfarbe</span>
+                        <div class="color-right">
+                            <span class="color-hex" id="hex-theme">#F3D6DA</span>
+                            <input type="color" id="color-theme" value="#F3D6DA">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <span class="color-label">Header-Text</span>
+                        <div class="color-right">
+                            <span class="color-hex" id="hex-header">#FFFFFF</span>
+                            <input type="color" id="color-header" value="#ffffff">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <span class="color-label">Tageszahlen</span>
+                        <div class="color-right">
+                            <span class="color-hex" id="hex-day">#2B2B35</span>
+                            <input type="color" id="color-day" value="#2B2B35">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <span class="color-label">Wochentage</span>
+                        <div class="color-right">
+                            <span class="color-hex" id="hex-weekday">#7a7380</span>
+                            <input type="color" id="color-weekday" value="#7a7380">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <span class="color-label">Hintergrund</span>
+                        <div class="color-right">
+                            <span class="color-hex" id="hex-bg">#FFFFFF</span>
+                            <input type="color" id="color-bg" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-label">Dark Mode</div>
+                    <div class="toggle-grid">
+                        <div class="toggle-item" style="grid-column:1/-1;">
+                            <span>Dunkles Design aktivieren</span>
+                            <label class="switch">
+                                <input type="checkbox" id="dark-mode">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="generate-btn" onclick="generateURL()">URL generieren</button>
+
+                <div class="result" id="result">
+                    <div class="result-title">Deine Widget-URL:</div>
+                    <div class="url-box" id="url-display"></div>
+                    <button class="copy-btn" id="copy-btn" onclick="copyURL()">URL kopieren</button>
+                    <div class="instructions">
+                        <strong>So einbetten in Notion:</strong><br>
+                        1. Notion-Seite öffnen<br>
+                        2. <code>/embed</code> eingeben<br>
+                        3. URL einfügen und Enter drücken
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-col">
+            <div class="preview-label">Vorschau</div>
+            <div class="preview-frame-wrapper">
+                <iframe id="preview-frame" src=""></iframe>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <footer>
+        Mit ♥ gemacht von <a href="https://instagram.com/dilaraliebt" target="_blank">Dilara</a>
+    </footer>
+
+    <script>
+        const WIDGET_URL = 'https://DEINUSERNAME.github.io/notion-widgets/kalender-widget.html';
+
+        const settings = {
+            weekStart: 'monday',
+            showTodayBtn: false,
+            highlightToday: true,
+            showBorder: false,
+            showNavigation: true,
+            themeColor: '#F3D6DA',
+            headerTextColor: '#ffffff',
+            dayTextColor: '#2B2B35',
+            weekdayTextColor: '#7a7380',
+            bgColor: '#ffffff',
+            darkMode: false
+        };
+
+        document.querySelectorAll('.week-option').forEach(el => {
+            el.addEventListener('click', () => {
+                document.querySelectorAll('.week-option').forEach(o => o.classList.remove('active'));
+                el.classList.add('active');
+                settings.weekStart = el.dataset.day;
+                updatePreview();
+            });
+        });
+
+        [
+            ['color-theme', 'themeColor', 'hex-theme'],
+            ['color-header', 'headerTextColor', 'hex-header'],
+            ['color-day', 'dayTextColor', 'hex-day'],
+            ['color-weekday', 'weekdayTextColor', 'hex-weekday'],
+            ['color-bg', 'bgColor', 'hex-bg'],
+        ].forEach(([id, key, hexId]) => {
+            document.getElementById(id).addEventListener('input', function() {
+                settings[key] = this.value;
+                document.getElementById(hexId).textContent = this.value.toUpperCase();
+                updatePreview();
+            });
+        });
+
+        [
+            ['show-today-btn', 'showTodayBtn'],
+            ['highlight-today', 'highlightToday'],
+            ['show-border', 'showBorder'],
+            ['show-navigation', 'showNavigation'],
+            ['dark-mode', 'darkMode'],
+        ].forEach(([id, key]) => {
+            document.getElementById(id).addEventListener('change', function() {
+                settings[key] = this.checked;
+                if (key === 'darkMode') {
+                    if (this.checked) {
+                        setColors('#7A2441', '#ffffff', '#ffffff', '#9ca3af', '#2B2B35');
+                    } else {
+                        setColors('#F3D6DA', '#ffffff', '#2B2B35', '#7a7380', '#ffffff');
+                    }
+                }
+                updatePreview();
+            });
+        });
+
+        function setColors(theme, header, day, weekday, bg) {
+            const map = {
+                'color-theme': ['themeColor', 'hex-theme', theme],
+                'color-header': ['headerTextColor', 'hex-header', header],
+                'color-day': ['dayTextColor', 'hex-day', day],
+                'color-weekday': ['weekdayTextColor', 'hex-weekday', weekday],
+                'color-bg': ['bgColor', 'hex-bg', bg],
+            };
+            Object.entries(map).forEach(([id, [key, hexId, val]]) => {
+                settings[key] = val;
+                document.getElementById(id).value = val;
+                document.getElementById(hexId).textContent = val.toUpperCase();
+            });
+        }
+
+        function buildPreviewHTML() {
+            const s = settings;
+            return `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:${s.bgColor};display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px;}
+.calendar{width:100%;max-width:300px;border-radius:16px;overflow:hidden;${s.showBorder ? `border:2px solid ${s.themeColor};` : ''}}
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:${s.themeColor};}
+.month-year{font-size:14px;font-weight:600;color:${s.headerTextColor};}
+.nav-btn{width:24px;height:24px;border:none;background:transparent;color:${s.headerTextColor};cursor:pointer;font-size:16px;display:${s.showNavigation ? 'flex' : 'none'};align-items:center;justify-content:center;border-radius:4px;}
+.nav-btn:hover{background:rgba(255,255,255,0.2);}
+.today-btn{display:${s.showTodayBtn ? 'block' : 'none'};width:100%;padding:6px;background:${s.themeColor};color:${s.darkMode ? '#2B2B35' : '#fff'};border:none;cursor:pointer;font-size:12px;}
+.body{padding:10px 12px 14px;}
+.weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px;}
+.weekday{text-align:center;font-size:10px;font-weight:500;color:${s.weekdayTextColor};padding:4px 0;text-transform:uppercase;letter-spacing:0.4px;}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;color:${s.dayTextColor};border-radius:50%;}
+.day.other-month{opacity:0.3;}
+.day.today{${s.highlightToday ? `background:${s.themeColor};color:${s.darkMode ? '#2B2B35' : '#fff'};font-weight:600;` : ''}}
+</style></head><body>
+<div class="calendar">
+<button class="today-btn" onclick="goToToday()">Heute</button>
+<div class="header">
+  <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
+  <span class="month-year" id="my"></span>
+  <button class="nav-btn" onclick="changeMonth(1)">›</button>
+</div>
+<div class="body">
+  <div class="weekdays" id="wd"></div>
+  <div class="days" id="d"></div>
+</div>
+</div>
+<script>
+let cur=new Date();
+const ws='${s.weekStart}';
+const mo=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const wdm=['Mo','Di','Mi','Do','Fr','Sa','So'],wds=['So','Mo','Di','Mi','Do','Fr','Sa'];
+function render(){
+  const y=cur.getFullYear(),m=cur.getMonth(),t=new Date();
+  document.getElementById('my').textContent=mo[m]+' '+y;
+  const wd=ws==='monday'?wdm:wds;
+  document.getElementById('wd').innerHTML=wd.map(d=>'<div class="weekday">'+d+'</div>').join('');
+  const fl=new Date(y,m,1),ll=new Date(y,m+1,0);
+  let sd=fl.getDay();
+  if(ws==='monday')sd=sd===0?6:sd-1;
+  let h='';
+  const pl=new Date(y,m,0).getDate();
+  for(let i=sd-1;i>=0;i--)h+='<div class="day other-month">'+(pl-i)+'</div>';
+  for(let d=1;d<=ll.getDate();d++){const it=d===t.getDate()&&m===t.getMonth()&&y===t.getFullYear();h+='<div class="day'+(it?' today':'')+'">'+ d+'</div>';}
+  const tc=Math.ceil((sd+ll.getDate())/7)*7,rm=tc-(sd+ll.getDate());
+  for(let i=1;i<=rm;i++)h+='<div class="day other-month">'+i+'</div>';
+  document.getElementById('d').innerHTML=h;
+}
+function changeMonth(d){cur.setMonth(cur.getMonth()+d);render();}
+function goToToday(){cur=new Date();render();}
+render();
+<\/script></body></html>`;
+        }
+
+        function updatePreview() {
+            const blob = new Blob([buildPreviewHTML()], { type: 'text/html' });
+            document.getElementById('preview-frame').src = URL.createObjectURL(blob);
+        }
+
+        function generateURL() {
+            const params = new URLSearchParams();
+            Object.entries(settings).forEach(([k, v]) => params.append(k, v));
+            const url = WIDGET_URL + '?' + params.toString();
+            document.getElementById('url-display').textContent = url;
+            const result = document.getElementById('result');
+            result.classList.add('show');
+            result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function copyURL() {
+            const url = document.getElementById('url-display').textContent;
+            const btn = document.getElementById('copy-btn');
+            navigator.clipboard.writeText(url).then(() => {
+                btn.textContent = '✓ Kopiert!';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = 'URL kopieren'; btn.classList.remove('copied'); }, 2000);
+            });
+        }
+
+        updatePreview();
+    </script>
+</body>
+</html>
