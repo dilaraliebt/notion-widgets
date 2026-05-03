@@ -12,7 +12,7 @@ Hauptberuflich arbeite ich als Social Media Managerin & Content Creatorin. In me
 
 ---
 
-## 📅 Kalender (`kalender-widget.html`)
+## 📅 Kalender
 
 Ein ruhiger, cleaner Monatskalender auf Deutsch – perfekt für deine Notion-Seite.
 
