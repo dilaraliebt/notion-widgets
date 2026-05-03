@@ -37,12 +37,6 @@ https://dilaraliebt.github.io/notion-widgets/kalender/kalender-baukasten.html
 
 ---
 
-## Catch me on
-
-📸 [Instagram](https://instagram.com/dilaraliebt) 🎥 [TikTok](https://www.tiktok.com/@dilaraliebt) 📺 [YouTube](https://youtube.com/user/dilaraliebt) 📌 [Pinterest](https://de.pinterest.com/dilaraliebt/)
-
----
-
 Mehr Widgets folgen nach und nach, schau gerne wieder vorbei! 💗
 
-Made with ♥ by Dilara
+Made with ♥ by [dilarliebt](https://instagram.com/dilaraliebt)
