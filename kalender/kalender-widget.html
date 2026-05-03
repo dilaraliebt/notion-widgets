@@ -23,9 +23,10 @@
         .calendar {
             width: 100%;
             max-width: 350px;
+            border-radius: 16px;
+            overflow: hidden;
         }
 
-        /* Header mit farbigem Hintergrund, Pfeile links & rechts */
         .header {
             display: flex;
             justify-content: space-between;
@@ -49,7 +50,6 @@
             transition: background 0.2s;
         }
 
-        /* Grid-Bereich – original Abstände */
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -82,18 +82,13 @@
             cursor: default;
         }
 
-        .day.other-month {
-            opacity: 0.3;
-        }
-        .day.today {
-            font-weight: 600;
-        }
+        .day.other-month { opacity: 0.3; }
+        .day.today { font-weight: 600; }
 
-        /* Heute-Button unten, zentriert */
         .today-btn-wrapper {
             display: none;
             justify-content: center;
-            martgin-top: 15;
+            margin-top: 15px;
             padding-bottom: 20px;
         }
 
@@ -144,23 +139,20 @@
             darkMode: params.get('darkMode') === 'true'
         };
 
-        // Hintergrund
         document.body.style.background = settings.bgColor;
 
-        // Rahmen
         const calendar = document.querySelector('.calendar');
         if (settings.showBorder) {
             calendar.style.border = `2px solid ${settings.themeColor}`;
         }
 
-        // Header
         const header = document.getElementById('header');
         header.style.background = settings.themeColor;
+        header.style.padding = '10px 16px';
 
         const monthYear = document.getElementById('month-year');
         monthYear.style.color = settings.headerTextColor;
 
-        // Navigation
         if (!settings.showNavigation) {
             document.getElementById('nav-prev').style.display = 'none';
             document.getElementById('nav-next').style.display = 'none';
@@ -172,7 +164,6 @@
             btn.addEventListener('mouseout', () => btn.style.background = 'transparent');
         });
 
-        // Heute-Button
         const todayBtnWrapper = document.getElementById('today-btn-wrapper');
         const todayBtn = document.getElementById('today-btn');
         if (settings.showTodayBtn) {
@@ -181,7 +172,6 @@
             todayBtn.style.color = settings.headerTextColor;
         }
 
-        // Kalenderdaten
         let currentDate = new Date();
 
         const months = [
