@@ -1,7 +1,8 @@
 # 🌼 Notion Widgets by @dilaraliebt
 
-Welcome & schön, dass du hier bist! 🫶🏼
-Auf dieser Seite findest du kleine, frei verwendbare Widgets für Notion, die ich viel Liebe gestaltet habe. Für alle, die ihren digitalen Alltag ein bisschen schöner machen möchten.
+Hi! Schön, dass du hier bist! 🫶🏼
+Auf dieser Seite findest du kleine, frei verwendbare Widgets für Notion, die ich mit viel Liebe gestaltet habe.
+Für alle, die ihren digitalen Alltag ein bisschen schöner machen möchten.
 
 ---
 
@@ -36,4 +37,4 @@ Ein ruhiger, cleaner Monatskalender auf Deutsch – perfekt für deine Notion-Se
 
 Mehr Widgets folgen nach und nach, schau gerne wieder vorbei! 💗
 
-Made with ♥ by [dilarliebt](https://instagram.com/dilaraliebt)
+Mit ♥ gemacht von <a href="https://instagram.com/dilaraliebt" target="_blank">dilaraliebt</a>
