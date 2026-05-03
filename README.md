@@ -39,10 +39,7 @@ https://dilaraliebt.github.io/notion-widgets/kalender-widget.html
 
 ## Catch me on
 
-- 📸 [Instagram](https://instagram.com/dilaraliebt)
-- 🎥 [TikTok](https://www.tiktok.com/@dilaraliebt)
-- 📺 [YouTube](https://youtube.com/user/dilaraliebt)
-- 📌 [Pinterest](https://de.pinterest.com/dilaraliebt/)
+📸 [Instagram](https://instagram.com/dilaraliebt) | 🎥 [TikTok](https://www.tiktok.com/@dilaraliebt) | 📺 [YouTube](https://youtube.com/user/dilaraliebt) | 📌 [Pinterest](https://de.pinterest.com/dilaraliebt/)
 
 ---
 
