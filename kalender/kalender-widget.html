@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalender Widget</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -55,16 +51,6 @@
             transition: background 0.2s;
         }
 
-        .today-btn {
-            display: block;
-            width: 100%;
-            padding: 8px 16px;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
         .calendar-body {
             padding: 12px 16px 16px;
         }
@@ -101,18 +87,32 @@
             cursor: default;
         }
 
-        .day.other-month {
-            opacity: 0.3;
+        .day.other-month { opacity: 0.3; }
+        .day.today { font-weight: 600; }
+
+        .today-btn-wrapper {
+            display: none;
+            justify-content: center;
+            padding: 12px 16px 16px;
         }
 
-        .day.today {
-            font-weight: 600;
+        .today-btn {
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-family: inherit;
+            transition: opacity 0.2s;
+            letter-spacing: 0.3px;
         }
+
+        .today-btn:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
     <div class="calendar">
-        <button class="today-btn" id="today-btn" onclick="goToToday()">Heute</button>
         <div class="header" id="header">
             <button class="nav-btn" id="nav-prev" onclick="changeMonth(-1)">‹</button>
             <span class="month-year" id="month-year"></span>
@@ -122,42 +122,45 @@
             <div class="weekdays" id="weekdays"></div>
             <div class="days" id="days"></div>
         </div>
+        <div class="today-btn-wrapper" id="today-btn-wrapper">
+            <button class="today-btn" id="today-btn" onclick="goToToday()">Heute</button>
+        </div>
     </div>
 
     <script>
-        // URL-Parameter auslesen
         const params = new URLSearchParams(window.location.search);
-        
-        // Einstellungen
+
         const settings = {
-            weekStart: params.get('weekStart') || 'monday', // Deutschland: Montag
+            weekStart: 'monday',
             showTodayBtn: params.get('showTodayBtn') === 'true',
             highlightToday: params.get('highlightToday') !== 'false',
             showBorder: params.get('showBorder') === 'true',
             showNavigation: params.get('showNavigation') !== 'false',
-            themeColor: params.get('themeColor') || '#f4c3d9',
-            headerTextColor: params.get('headerTextColor') || '#37352F',
-            dayTextColor: params.get('dayTextColor') || '#37352F',
-            weekdayTextColor: params.get('weekdayTextColor') || '#718096',
+            themeColor: params.get('themeColor') || '#F3D6DA',
+            headerTextColor: params.get('headerTextColor') || '#FFFFFF',
+            dayTextColor: params.get('dayTextColor') || '#2B2B35',
+            weekdayTextColor: params.get('weekdayTextColor') || '#7A7380',
             bgColor: params.get('bgColor') || '#FFFFFF',
             darkMode: params.get('darkMode') === 'true'
         };
 
-        // Stile anwenden
+        // Hintergrund
         document.body.style.background = settings.bgColor;
-        
+
+        // Rahmen
         const calendar = document.querySelector('.calendar');
         if (settings.showBorder) {
             calendar.style.border = `2px solid ${settings.themeColor}`;
-            calendar.style.borderRadius = '12px';
-            calendar.style.padding = '20px';
         }
 
-        const monthYear = document.getElementById('month-year');
-        monthYear.style.color = settings.darkMode ? '#191919' : '#FFFFFF';
-
+        // Header
         const header = document.getElementById('header');
         header.style.background = settings.themeColor;
+
+        const monthYear = document.getElementById('month-year');
+        monthYear.style.color = settings.headerTextColor;
+
+        // Navigation
         if (!settings.showNavigation) {
             document.getElementById('nav-prev').style.display = 'none';
             document.getElementById('nav-next').style.display = 'none';
@@ -165,79 +168,70 @@
 
         const navBtns = document.querySelectorAll('.nav-btn');
         navBtns.forEach(btn => {
-            btn.style.color = settings.darkMode ? '#191919' : '#FFFFFF';
+            btn.style.color = settings.headerTextColor;
             btn.addEventListener('mouseover', () => btn.style.background = 'rgba(255,255,255,0.2)');
             btn.addEventListener('mouseout', () => btn.style.background = 'transparent');
         });
 
+        // Heute-Button
+        const todayBtnWrapper = document.getElementById('today-btn-wrapper');
         const todayBtn = document.getElementById('today-btn');
-        todayBtn.style.display = settings.showTodayBtn ? 'block' : 'none';
-        todayBtn.style.background = settings.themeColor;
-        todayBtn.style.color = settings.darkMode ? '#191919' : '#FFFFFF';
+        if (settings.showTodayBtn) {
+            todayBtnWrapper.style.display = 'flex';
+            todayBtn.style.background = settings.themeColor;
+            todayBtn.style.color = settings.headerTextColor;
+        }
 
         // Kalenderdaten
         let currentDate = new Date();
-        
+
         const months = [
             'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
             'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
         ];
-        
-        // Deutsche Wochentage: Woche beginnt mit Montag
+
         const weekdaysMon = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-        const weekdaysSun = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
         function renderCalendar() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
             const today = new Date();
-            
+
             monthYear.textContent = months[month] + ' ' + year;
-            
-            // Wochentag-Kopfzeile
+
             const weekdaysEl = document.getElementById('weekdays');
-            const weekdays = settings.weekStart === 'monday' ? weekdaysMon : weekdaysSun;
-            weekdaysEl.innerHTML = weekdays.map(d => 
+            weekdaysEl.innerHTML = weekdaysMon.map(d =>
                 `<div class="weekday" style="color: ${settings.weekdayTextColor}">${d}</div>`
             ).join('');
-            
-            // Tage berechnen
+
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
             let startDayOfWeek = firstDay.getDay();
-            
-            if (settings.weekStart === 'monday') {
-                startDayOfWeek = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
-            }
-            
+            startDayOfWeek = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
+
             const daysEl = document.getElementById('days');
             let html = '';
-            
-            // Tage des Vormonats
+
             const prevMonthLastDay = new Date(year, month, 0).getDate();
             for (let i = startDayOfWeek - 1; i >= 0; i--) {
                 html += `<div class="day other-month" style="color: ${settings.dayTextColor}">${prevMonthLastDay - i}</div>`;
             }
-            
-            // Tage des aktuellen Monats
+
             for (let day = 1; day <= lastDay.getDate(); day++) {
                 const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
                 let style = `color: ${settings.dayTextColor}`;
-                
                 if (isToday && settings.highlightToday) {
-                    style = `background: ${settings.themeColor}; color: ${settings.darkMode ? '#191919' : '#FFFFFF'}`;
+                    style = `background: ${settings.themeColor}; color: ${settings.headerTextColor}`;
                 }
-                
                 html += `<div class="day${isToday ? ' today' : ''}" style="${style}">${day}</div>`;
             }
-            
-            // Tage des Folgemonats
+
             const totalCells = Math.ceil((startDayOfWeek + lastDay.getDate()) / 7) * 7;
             const remaining = totalCells - (startDayOfWeek + lastDay.getDate());
             for (let i = 1; i <= remaining; i++) {
                 html += `<div class="day other-month" style="color: ${settings.dayTextColor}">${i}</div>`;
             }
-            
+
             daysEl.innerHTML = html;
         }
 
@@ -251,7 +245,6 @@
             renderCalendar();
         }
 
-        // Erstes Rendern
         renderCalendar();
     </script>
 </body>
