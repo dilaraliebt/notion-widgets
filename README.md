@@ -32,7 +32,7 @@ Ein ruhiger, cleaner Monatskalender auf Deutsch – perfekt für deine Notion-Se
 
 
 ```
-https://dilaraliebt.github.io/notion-widgets/kalender/kalender-baukasten.html
+(https://dilaraliebt.github.io/notion-widgets/kalender/kalender-baukasten.html)
 ```
 
 ---
