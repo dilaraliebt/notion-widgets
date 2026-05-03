@@ -138,31 +138,6 @@
             margin-bottom: 10px;
         }
 
-        /* Week toggle */
-        .week-toggle {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .week-option {
-            padding: 10px;
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--text-soft);
-            transition: all 0.2s;
-        }
-
-        .week-option.active {
-            border-color: var(--primary);
-            background: var(--primary-light);
-            color: var(--primary);
-            font-weight: 500;
-        }
-
         /* Color rows */
         .color-row {
             display: flex;
@@ -408,9 +383,9 @@
 <body>
 
     <div class="hero">
-        <div class="hero-tag">Notion Widget</div>
-        <h1>Dein Kalender,<br><em>dein Stil.</em></h1>
-        <p>Gestalte deinen persönlichen Notion-Kalender – ruhig, clean und ganz in deinen Farben.</p>
+        <div class="hero-tag">Kalender Widget Baukasten</div>
+        <h1>Dein Notion,<br><em>dein Stil.</em></h1>
+        <p>Gestalte deinen ganz persönlichen Notion-Kalender, in deinen Lieblingsfarben.</p>
     </div>
 
     <div class="main">
@@ -418,14 +393,6 @@
         <div class="settings-col">
             <div class="panel">
                 <div class="panel-title">Einstellungen</div>
-
-                <div class="form-group">
-                    <div class="form-label">Woche beginnt mit</div>
-                    <div class="week-toggle">
-                        <div class="week-option" data-day="sunday">Sonntag</div>
-                        <div class="week-option active" data-day="monday">Montag</div>
-                    </div>
-                </div>
 
                 <div class="form-group">
                     <div class="form-label">Anzeige</div>
@@ -516,14 +483,15 @@
                 <button class="generate-btn" onclick="generateURL()">URL generieren</button>
 
                 <div class="result" id="result">
-                    <div class="result-title">Deine Widget-URL:</div>
+                    <div class="result-title">☑️ Deine Widget-URL:</div>
                     <div class="url-box" id="url-display"></div>
                     <button class="copy-btn" id="copy-btn" onclick="copyURL()">URL kopieren</button>
                     <div class="instructions">
-                        <strong>So einbetten in Notion:</strong><br>
-                        1. Notion-Seite öffnen<br>
-                        2. <code>/embed</code> eingeben<br>
-                        3. URL einfügen und Enter drücken
+                        <strong>So bindest du ihn in Notion ein:</strong><br>
+                        1. Öffne deine Notion-Seite<br>
+                        2. Tippe <code>/embed</code><br>
+                        3. Füge die URL ein und drücke Enter<br>
+                        4. Fertig – dein Kalender erscheint! 🥳
                     </div>
                 </div>
             </div>
@@ -541,7 +509,7 @@
     <div class="divider"></div>
 
     <footer>
-        Mit ♥ gemacht von <a href="https://instagram.com/dilaraliebt" target="_blank">Dilara</a>
+        Made with ♥ by <a href="https://instagram.com/dilaraliebt" target="_blank">dilaraliebt</a>
     </footer>
 
     <script>
@@ -560,15 +528,6 @@
             bgColor: '#ffffff',
             darkMode: false
         };
-
-        document.querySelectorAll('.week-option').forEach(el => {
-            el.addEventListener('click', () => {
-                document.querySelectorAll('.week-option').forEach(o => o.classList.remove('active'));
-                el.classList.add('active');
-                settings.weekStart = el.dataset.day;
-                updatePreview();
-            });
-        });
 
         [
             ['color-theme', 'themeColor', 'hex-theme'],
