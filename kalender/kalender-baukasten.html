@@ -9,7 +9,7 @@
         :root {
             --primary: #7A2441;
             --primary-deep: #5C1C30;
-            --primary-light: #F9EEf1;
+            --primary-light: #F9EEF1;
             --secondary: #1A2461;
             --pale-pink: #F3D6DA;
             --azure: #D1E3FC;
@@ -31,9 +31,8 @@
             min-height: 100vh;
         }
 
-        /* Hero */
         .hero {
-            background: linear-gradient(160deg, #f9eef1 0%, var(--alabaster) 55%, #e8eef9 100%);
+            background: linear-gradient(170deg, #F9EEF1 0%, #F4EDE8 40%, #EAF0F8 100%);
             padding: 80px 24px 60px;
             text-align: center;
             position: relative;
@@ -43,18 +42,18 @@
         .hero::before {
             content: '';
             position: absolute;
-            top: -60px; right: -60px;
-            width: 320px; height: 320px;
-            background: radial-gradient(circle, rgba(122,36,65,0.1) 0%, transparent 70%);
+            top: -80px; right: -80px;
+            width: 360px; height: 360px;
+            background: radial-gradient(circle, rgba(122,36,65,0.07) 0%, transparent 65%);
             border-radius: 50%;
         }
 
         .hero::after {
             content: '';
             position: absolute;
-            bottom: -40px; left: -40px;
-            width: 220px; height: 220px;
-            background: radial-gradient(circle, rgba(26,36,97,0.08) 0%, transparent 70%);
+            bottom: -60px; left: -60px;
+            width: 260px; height: 260px;
+            background: radial-gradient(circle, rgba(26,36,97,0.06) 0%, transparent 65%);
             border-radius: 50%;
         }
 
@@ -66,7 +65,7 @@
             text-transform: uppercase;
             color: var(--primary);
             margin-bottom: 20px;
-            opacity: 0.8;
+            opacity: 0.75;
         }
 
         .hero h1 {
@@ -92,7 +91,6 @@
             line-height: 1.7;
         }
 
-        /* Layout */
         .main {
             max-width: 1100px;
             margin: 0 auto;
@@ -108,7 +106,6 @@
             .preview-col { order: -1; }
         }
 
-        /* Panel */
         .panel {
             background: var(--white);
             border-radius: 20px;
@@ -138,7 +135,6 @@
             margin-bottom: 10px;
         }
 
-        /* Color rows */
         .color-row {
             display: flex;
             align-items: center;
@@ -179,7 +175,6 @@
             background: none;
         }
 
-        /* Toggles */
         .toggle-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -235,11 +230,7 @@
         input:checked + .switch-slider { background: var(--primary); }
         input:checked + .switch-slider::before { transform: translateX(18px); }
 
-        /* Preview */
-        .preview-col {
-            position: sticky;
-            top: 24px;
-        }
+        .preview-col { position: sticky; top: 24px; }
 
         .preview-label {
             font-size: 11px;
@@ -252,7 +243,7 @@
         }
 
         .preview-frame-wrapper {
-            background: linear-gradient(135deg, #f0ebe6 0%, #e8eef9 100%);
+            background: linear-gradient(150deg, #F0EBE6 0%, #E8EEF9 100%);
             border-radius: 20px;
             padding: 30px 20px;
             display: flex;
@@ -264,13 +255,12 @@
         #preview-frame {
             width: 100%;
             max-width: 320px;
-            height: 300px;
+            height: 320px;
             border: none;
             border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(43,43,53,0.14);
+            box-shadow: 0 8px 30px rgba(43,43,53,0.12);
         }
 
-        /* Generate button */
         .generate-btn {
             width: 100%;
             padding: 16px;
@@ -285,15 +275,14 @@
             margin-top: 8px;
             transition: all 0.25s;
             letter-spacing: 0.3px;
-            box-shadow: 0 4px 20px rgba(122,36,65,0.25);
+            box-shadow: 0 4px 20px rgba(122,36,65,0.2);
         }
 
         .generate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(122,36,65,0.35);
+            box-shadow: 0 8px 28px rgba(122,36,65,0.3);
         }
 
-        /* Result */
         .result {
             display: none;
             margin-top: 20px;
@@ -358,7 +347,6 @@
             border: 1px solid var(--border);
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 40px 24px 60px;
@@ -438,10 +426,10 @@
                         </div>
                     </div>
                     <div class="color-row">
-                        <span class="color-label">Header-Text</span>
+                        <span class="color-label">Header-Text & Icons</span>
                         <div class="color-right">
                             <span class="color-hex" id="hex-header">#FFFFFF</span>
-                            <input type="color" id="color-header" value="#ffffff">
+                            <input type="color" id="color-header" value="#FFFFFF">
                         </div>
                     </div>
                     <div class="color-row">
@@ -462,7 +450,7 @@
                         <span class="color-label">Hintergrund</span>
                         <div class="color-right">
                             <span class="color-hex" id="hex-bg">#FFFFFF</span>
-                            <input type="color" id="color-bg" value="#ffffff">
+                            <input type="color" id="color-bg" value="#FFFFFF">
                         </div>
                     </div>
                 </div>
@@ -509,11 +497,11 @@
     <div class="divider"></div>
 
     <footer>
-        Made with ♥ by <a href="https://dilaraliebt.github.io/notion-widgets/README.md" target="_blank">dilaraliebt</a>
+        Mit ♥ gemacht von <a href="https://instagram.com/dilaraliebt" target="_blank">dilaraliebt</a>
     </footer>
 
     <script>
-        const WIDGET_URL = 'https://DEINUSERNAME.github.io/notion-widgets/kalender-widget.html';
+        const WIDGET_URL = 'https://dilaraliebt.github.io/notion-widgets/kalender-widget.html';
 
         const settings = {
             weekStart: 'monday',
@@ -587,42 +575,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .calendar{width:100%;max-width:300px;border-radius:16px;overflow:hidden;${s.showBorder ? `border:2px solid ${s.themeColor};` : ''}}
 .header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:${s.themeColor};}
 .month-year{font-size:14px;font-weight:600;color:${s.headerTextColor};}
-.nav-btn{width:24px;height:24px;border:none;background:transparent;color:${s.headerTextColor};cursor:pointer;font-size:16px;display:${s.showNavigation ? 'flex' : 'none'};align-items:center;justify-content:center;border-radius:4px;}
+.nav-btn{width:24px;height:24px;border:none;background:transparent;color:${s.headerTextColor};cursor:pointer;font-size:16px;display:${s.showNavigation ? 'flex' : 'none'};align-items:center;justify-content:center;border-radius:4px;transition:background 0.2s;}
 .nav-btn:hover{background:rgba(255,255,255,0.2);}
-.today-btn{display:${s.showTodayBtn ? 'block' : 'none'};width:100%;padding:6px;background:${s.themeColor};color:${s.darkMode ? '#2B2B35' : '#fff'};border:none;cursor:pointer;font-size:12px;}
-.body{padding:10px 12px 14px;}
+.cal-body{padding:10px 12px 12px;}
 .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px;}
 .weekday{text-align:center;font-size:10px;font-weight:500;color:${s.weekdayTextColor};padding:4px 0;text-transform:uppercase;letter-spacing:0.4px;}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
 .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;color:${s.dayTextColor};border-radius:50%;}
 .day.other-month{opacity:0.3;}
-.day.today{${s.highlightToday ? `background:${s.themeColor};color:${s.darkMode ? '#2B2B35' : '#fff'};font-weight:600;` : ''}}
+.day.today{${s.highlightToday ? `background:${s.themeColor};color:${s.headerTextColor};font-weight:600;` : ''}}
+.today-btn-wrapper{display:${s.showTodayBtn ? 'flex' : 'none'};justify-content:center;padding:8px 12px 14px;}
+.today-btn{border:none;cursor:pointer;font-size:11px;font-weight:500;padding:5px 16px;border-radius:20px;background:${s.themeColor};color:${s.headerTextColor};font-family:inherit;transition:opacity 0.2s;letter-spacing:0.3px;}
 </style></head><body>
 <div class="calendar">
-<button class="today-btn" onclick="goToToday()">Heute</button>
 <div class="header">
   <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
   <span class="month-year" id="my"></span>
   <button class="nav-btn" onclick="changeMonth(1)">›</button>
 </div>
-<div class="body">
+<div class="cal-body">
   <div class="weekdays" id="wd"></div>
   <div class="days" id="d"></div>
+</div>
+<div class="today-btn-wrapper">
+  <button class="today-btn" onclick="goToToday()">Heute</button>
 </div>
 </div>
 <script>
 let cur=new Date();
-const ws='${s.weekStart}';
 const mo=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-const wdm=['Mo','Di','Mi','Do','Fr','Sa','So'],wds=['So','Mo','Di','Mi','Do','Fr','Sa'];
+const wdm=['Mo','Di','Mi','Do','Fr','Sa','So'];
 function render(){
   const y=cur.getFullYear(),m=cur.getMonth(),t=new Date();
   document.getElementById('my').textContent=mo[m]+' '+y;
-  const wd=ws==='monday'?wdm:wds;
-  document.getElementById('wd').innerHTML=wd.map(d=>'<div class="weekday">'+d+'</div>').join('');
+  document.getElementById('wd').innerHTML=wdm.map(d=>'<div class="weekday">'+d+'</div>').join('');
   const fl=new Date(y,m,1),ll=new Date(y,m+1,0);
-  let sd=fl.getDay();
-  if(ws==='monday')sd=sd===0?6:sd-1;
+  let sd=fl.getDay();sd=sd===0?6:sd-1;
   let h='';
   const pl=new Date(y,m,0).getDate();
   for(let i=sd-1;i>=0;i--)h+='<div class="day other-month">'+(pl-i)+'</div>';
