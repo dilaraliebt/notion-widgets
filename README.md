@@ -37,4 +37,4 @@ Ein ruhiger, cleaner Monatskalender auf Deutsch – perfekt für deine Notion-Se
 
 Mehr Widgets folgen nach und nach, schau gerne wieder vorbei! 💗
 
-Mit ♥ gemacht von <a href="https://instagram.com/dilaraliebt" target="_blank">dilaraliebt</a>
+Made with ♥ by <a href="https://instagram.com/dilaraliebt" target="_blank">dilaraliebt</a> | © 2026
