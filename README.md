@@ -30,10 +30,7 @@ Ein ruhiger, cleaner Monatskalender auf Deutsch – perfekt für deine Notion-Se
 
 ---
 
-
-```
-[Gestalte hier dein persönliches Kalender-Widget für Notion](https://dilaraliebt.github.io/notion-widgets/kalender/kalender-baukasten.html)
-```
+[➡️ Gestalte hier dein persönliches Kalender-Widget für Notion](https://dilaraliebt.github.io/notion-widgets/kalender/kalender-baukasten.html)
 
 ---
 
