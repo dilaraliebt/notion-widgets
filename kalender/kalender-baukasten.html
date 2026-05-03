@@ -497,7 +497,7 @@
     <div class="divider"></div>
 
     <footer>
-        Made with ♥ by <a href="https://instagram.com/dilaraliebt" target="_blank">dilaraliebt</a> | © 2026
+        Mit ♥ gemacht von <a href="https://instagram.com/dilaraliebt" target="_blank">dilaraliebt</a>
     </footer>
 
     <script>
@@ -571,21 +571,22 @@
             return `<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:${s.bgColor};display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:${s.bgColor};display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;}
 .calendar{width:100%;max-width:300px;border-radius:16px;overflow:hidden;${s.showBorder ? `border:2px solid ${s.themeColor};` : ''}}
-.header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:${s.themeColor};}
-.month-year{font-size:14px;font-weight:600;color:${s.headerTextColor};}
-.nav-btn{width:24px;height:24px;border:none;background:transparent;color:${s.headerTextColor};cursor:pointer;font-size:16px;display:${s.showNavigation ? 'flex' : 'none'};align-items:center;justify-content:center;border-radius:4px;transition:background 0.2s;}
+.header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:${s.themeColor};}
+.month-year{font-size:16px;font-weight:600;color:${s.headerTextColor};}
+.nav-btn{width:32px;height:32px;border:none;background:transparent;color:${s.headerTextColor};cursor:pointer;font-size:16px;display:${s.showNavigation ? 'flex' : 'none'};align-items:center;justify-content:center;border-radius:8px;transition:background 0.2s;}
 .nav-btn:hover{background:rgba(255,255,255,0.2);}
-.cal-body{padding:10px 12px 0;}
-.weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px;}
-.weekday{text-align:center;font-size:10px;font-weight:500;color:${s.weekdayTextColor};padding:4px 0;text-transform:uppercase;letter-spacing:0.4px;}
-.days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
-.day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;color:${s.dayTextColor};border-radius:50%;}
+.cal-body{padding:20px;}
+.weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;}
+.weekday{text-align:center;font-size:12px;font-weight:500;color:${s.weekdayTextColor};padding:8px 0;text-transform:uppercase;letter-spacing:0.5px;}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:${s.dayTextColor};border-radius:50%;}
 .day.other-month{opacity:0.3;}
 .day.today{${s.highlightToday ? `background:${s.themeColor};color:${s.headerTextColor};font-weight:600;` : ''}}
-.today-btn-wrapper{display:${s.showTodayBtn ? 'flex' : 'none'};justify-content:center;padding:10px 12px 10px;}
-.today-btn{border:none;cursor:pointer;font-size:11px;font-weight:500;padding:5px 16px;border-radius:8px;background:${s.themeColor};color:${s.headerTextColor};font-family:inherit;transition:opacity 0.2s;letter-spacing:0.3px;}
+.today-btn-wrapper{display:${s.showTodayBtn ? 'flex' : 'none'};justify-content:center;padding:0 20px 20px;}
+.today-btn{border:none;cursor:pointer;font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;background:${s.themeColor};color:${s.headerTextColor};font-family:inherit;transition:opacity 0.2s;}
+.today-btn:hover{opacity:0.8;}
 </style></head><body>
 <div class="calendar">
 <div class="header">
