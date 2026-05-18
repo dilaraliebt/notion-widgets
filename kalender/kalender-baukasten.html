@@ -135,6 +135,44 @@
             margin-bottom: 10px;
         }
 
+        /* Stil-Auswahl */
+        .style-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .style-option {
+            padding: 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .style-option.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .style-option-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .style-option-desc {
+            font-size: 11px;
+            font-weight: 300;
+            color: var(--text-soft);
+            line-height: 1.4;
+        }
+
+        .style-option.active .style-option-name { color: var(--primary); }
+
+        /* Color rows */
         .color-row {
             display: flex;
             align-items: center;
@@ -144,6 +182,7 @@
         }
 
         .color-row:last-child { border-bottom: none; }
+        .color-row.hidden { display: none; }
 
         .color-label {
             font-size: 14px;
@@ -383,6 +422,20 @@
                 <div class="panel-title">Einstellungen</div>
 
                 <div class="form-group">
+                    <div class="form-label">Stil</div>
+                    <div class="style-toggle">
+                        <div class="style-option active" data-style="classic">
+                            <div class="style-option-name">Classic</div>
+                            <div class="style-option-desc">Monat & Pfeile frei, kein farbiger Header</div>
+                        </div>
+                        <div class="style-option" data-style="modern">
+                            <div class="style-option-name">Modern</div>
+                            <div class="style-option-desc">Farbiger Header, Pfeile links & rechts</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="form-label">Anzeige</div>
                     <div class="toggle-grid">
                         <div class="toggle-item">
@@ -425,11 +478,11 @@
                             <input type="color" id="color-theme" value="#F3D6DA">
                         </div>
                     </div>
-                    <div class="color-row">
+                    <div class="color-row" id="row-header-text">
                         <span class="color-label">Header-Text & Icons</span>
                         <div class="color-right">
-                            <span class="color-hex" id="hex-header">#FFFFFF</span>
-                            <input type="color" id="color-header" value="#FFFFFF">
+                            <span class="color-hex" id="hex-header">#37352F</span>
+                            <input type="color" id="color-header" value="#37352F">
                         </div>
                     </div>
                     <div class="color-row">
@@ -497,26 +550,52 @@
     <div class="divider"></div>
 
     <footer>
-        Made with ♥ by <a href="https://instagram.com/dilaraliebt" target="_blank">dilaraliebt</a> | © 2026
+        Mit ♥ gemacht von <a href="https://instagram.com/dilaraliebt" target="_blank">dilaraliebt</a> | © 2026
     </footer>
 
     <script>
         const WIDGET_URL = 'https://dilaraliebt.github.io/notion-widgets/kalender/kalender-widget.html';
 
         const settings = {
+            style: 'classic',
             weekStart: 'monday',
             showTodayBtn: false,
             highlightToday: true,
             showBorder: false,
             showNavigation: true,
             themeColor: '#F3D6DA',
-            headerTextColor: '#FFFFFF',
+            headerTextColor: '#37352F',
             dayTextColor: '#2B2B35',
             weekdayTextColor: '#7A7380',
             bgColor: '#FFFFFF',
             darkMode: false
         };
 
+        // Stil-Auswahl
+        document.querySelectorAll('.style-option').forEach(el => {
+            el.addEventListener('click', () => {
+                document.querySelectorAll('.style-option').forEach(o => o.classList.remove('active'));
+                el.classList.add('active');
+                settings.style = el.dataset.style;
+
+                // Header-Text Farbe je nach Stil anpassen
+                if (settings.style === 'modern') {
+                    setHeaderColor('#FFFFFF');
+                } else {
+                    setHeaderColor('#37352F');
+                }
+
+                updatePreview();
+            });
+        });
+
+        function setHeaderColor(color) {
+            settings.headerTextColor = color;
+            document.getElementById('color-header').value = color;
+            document.getElementById('hex-header').textContent = color.toUpperCase();
+        }
+
+        // Farben
         [
             ['color-theme', 'themeColor', 'hex-theme'],
             ['color-header', 'headerTextColor', 'hex-header'],
@@ -531,6 +610,7 @@
             });
         });
 
+        // Toggles
         [
             ['show-today-btn', 'showTodayBtn'],
             ['highlight-today', 'highlightToday'],
@@ -542,9 +622,17 @@
                 settings[key] = this.checked;
                 if (key === 'darkMode') {
                     if (this.checked) {
-                        setColors('#7A2441', '#FFFFFF', '#FFFFFF', '#9CA3AF', '#2B2B35');
+                        if (settings.style === 'modern') {
+                            setColors('#7A2441', '#FFFFFF', '#FFFFFF', '#9CA3AF', '#2B2B35');
+                        } else {
+                            setColors('#7A2441', '#2B2B35', '#FFFFFF', '#9CA3AF', '#2B2B35');
+                        }
                     } else {
-                        setColors('#F3D6DA', '#FFFFFF', '#2B2B35', '#7A7380', '#FFFFFF');
+                        if (settings.style === 'modern') {
+                            setColors('#F3D6DA', '#FFFFFF', '#2B2B35', '#7A7380', '#FFFFFF');
+                        } else {
+                            setColors('#F3D6DA', '#37352F', '#2B2B35', '#7A7380', '#FFFFFF');
+                        }
                     }
                 }
                 updatePreview();
@@ -568,32 +656,40 @@
 
         function buildPreviewHTML() {
             const s = settings;
+            const isModern = s.style === 'modern';
+            const todayTextColor = isModern ? s.headerTextColor : (s.darkMode ? '#191919' : '#FFFFFF');
+
+            const headerHTML = isModern
+                ? `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:${s.themeColor};">
+                     <button style="width:32px;height:32px;border:none;background:transparent;color:${s.headerTextColor};cursor:pointer;font-size:14px;border-radius:8px;" onclick="changeMonth(-1)">‹</button>
+                     <span style="font-size:18px;font-weight:600;color:${s.headerTextColor};" id="my"></span>
+                     <button style="width:32px;height:32px;border:none;background:transparent;color:${s.headerTextColor};cursor:pointer;font-size:14px;border-radius:8px;" onclick="changeMonth(1)">›</button>
+                   </div>`
+                : `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                     <span style="font-size:18px;font-weight:600;color:${s.headerTextColor};" id="my"></span>
+                     <div style="display:${s.showNavigation ? 'flex' : 'none'};gap:8px;">
+                       <button style="width:32px;height:32px;border:none;background:${s.themeColor}22;color:${s.headerTextColor};border-radius:8px;cursor:pointer;font-size:14px;" onclick="changeMonth(-1)">‹</button>
+                       <button style="width:32px;height:32px;border:none;background:${s.themeColor}22;color:${s.headerTextColor};border-radius:8px;cursor:pointer;font-size:14px;" onclick="changeMonth(1)">›</button>
+                     </div>
+                   </div>`;
+
             return `<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:${s.bgColor};display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;}
-.calendar{width:100%;max-width:300px;border-radius:16px;overflow:hidden;${s.showBorder ? `border:2px solid ${s.themeColor};` : ''}}
-.header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:${s.themeColor};}
-.month-year{font-size:18px;font-weight:600;color:${s.headerTextColor};}
-.nav-btn{width:32px;height:32px;border:none;background:transparent;color:${s.headerTextColor};cursor:pointer;font-size:14px;display:${s.showNavigation ? 'flex' : 'none'};align-items:center;justify-content:center;border-radius:8px;transition:background 0.2s;}
-.nav-btn:hover{background:rgba(255,255,255,0.2);}
-.cal-body{padding:20px 20px 0;}
+.calendar{width:100%;max-width:300px;${isModern ? 'border-radius:16px;overflow:hidden;' : ''}${s.showBorder ? `border:2px solid ${s.themeColor};${isModern ? '' : 'border-radius:16px;padding:20px;'}` : ''}}
+.cal-body{${isModern ? 'padding:20px 20px 0;' : ''}}
 .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;}
 .weekday{text-align:center;font-size:12px;font-weight:500;color:${s.weekdayTextColor};padding:8px 0;text-transform:uppercase;letter-spacing:0.5px;}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
 .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:${s.dayTextColor};border-radius:50%;}
 .day.other-month{opacity:0.3;}
-.day.today{${s.highlightToday ? `background:${s.themeColor};color:${s.headerTextColor};font-weight:600;` : ''}}
+.day.today{${s.highlightToday ? `background:${s.themeColor};color:${todayTextColor};font-weight:600;` : ''}}
 .today-btn-wrapper{display:${s.showTodayBtn ? 'flex' : 'none'};justify-content:center;margin-top:15px;padding-bottom:20px;}
-.today-btn{border:none;cursor:pointer;font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;background:${s.themeColor};color:${s.headerTextColor};font-family:inherit;transition:opacity 0.2s;}
-.today-btn:hover{opacity:0.8;}
+.today-btn{border:none;cursor:pointer;font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;background:${s.themeColor};color:${todayTextColor};font-family:inherit;transition:opacity 0.2s;}
 </style></head><body>
 <div class="calendar">
-<div class="header">
-  <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
-  <span class="month-year" id="my"></span>
-  <button class="nav-btn" onclick="changeMonth(1)">›</button>
-</div>
+${headerHTML}
 <div class="cal-body">
   <div class="weekdays" id="wd"></div>
   <div class="days" id="d"></div>
