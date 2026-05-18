@@ -53,16 +53,6 @@
             transition: background 0.2s;
         }
 
-        .today-btn-classic {
-            margin-bottom: 15px;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-        }
-        
         /* === MODERN STYLE === */
         .header-modern {
             display: flex;
@@ -87,26 +77,6 @@
             background: transparent;
             transition: background 0.2s;
         }
-
-        .today-btn-wrapper-modern {
-            display: none;
-            justify-content: center;
-            margin-top: 15px;
-            padding-bottom: 20px;
-        }
-
-        .today-btn-modern {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            font-family: inherit;
-            transition: opacity 0.2s;
-        }
-
-        .today-btn-modern:hover { opacity: 0.8; }
 
         /* === GEMEINSAM === */
         .weekdays {
@@ -144,6 +114,25 @@
         .day.other-month { opacity: 0.3; }
         .day.today { font-weight: 600; }
 
+        .today-btn-wrapper {
+            display: none;
+            justify-content: center;
+            margin-top: 15px;
+            padding-bottom: 20px;
+        }
+
+        .today-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            transition: opacity 0.2s;
+        }
+
+        .today-btn:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -213,7 +202,8 @@
             headerContainer.innerHTML = `
                 <div class="header-classic" id="header">
                     <span class="month-year-classic" id="month-year" style="color: ${settings.headerTextColor};"></span>
-                    <div class="nav-buttons-classic" id="nav-buttons" style="display: ${settings.showNavigation ? 'flex' : 'none'};">
+                    <div class="nav-buttons-classic" id="nav-buttons" style="display: ${settings.showNavigation ? 'flex' : 'none'}; align-items: center; gap: 8px;">
+                        ${settings.showTodayBtn ? `<button class="today-btn" id="today-btn" onclick="goToToday()" style="background: ${settings.themeColor}; color: ${settings.darkMode ? '#191919' : '#FFFFFF'}; margin: 0;">Heute</button>` : ''}
                         <button class="nav-btn-classic" onclick="changeMonth(-1)" style="background: ${settings.themeColor}22; color: ${settings.headerTextColor};">‹</button>
                         <button class="nav-btn-classic" onclick="changeMonth(1)" style="background: ${settings.themeColor}22; color: ${settings.headerTextColor};">›</button>
                     </div>
@@ -231,13 +221,13 @@
             document.querySelectorAll('.nav-btn-modern').forEach(btn => btn.style.display = 'none');
         }
 
-        // Heute-Button
+        // Heute-Button für Modern
         const todayBtnWrapper = document.getElementById('today-btn-wrapper');
         const todayBtn = document.getElementById('today-btn');
-        if (settings.showTodayBtn) {
+        if (settings.style === 'modern' && settings.showTodayBtn) {
             todayBtnWrapper.style.display = 'flex';
             todayBtn.style.background = settings.themeColor;
-            todayBtn.style.color = settings.style === 'modern' ? settings.headerTextColor : (settings.darkMode ? '#191919' : '#FFFFFF');
+            todayBtn.style.color = settings.headerTextColor;
         }
 
         let currentDate = new Date();
