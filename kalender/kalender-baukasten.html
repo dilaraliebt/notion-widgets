@@ -667,7 +667,8 @@
                    </div>`
                 : `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                      <span style="font-size:18px;font-weight:600;color:${s.headerTextColor};" id="my"></span>
-                     <div style="display:${s.showNavigation ? 'flex' : 'none'};gap:8px;">
+                     <div style="display:${s.showNavigation ? 'flex' : 'none'};align-items:center;gap:8px;">
+                       ${s.showTodayBtn ? `<button style="padding:8px 16px;border:none;background:${s.themeColor};color:${todayTextColor};border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;" onclick="goToToday()">Heute</button>` : ''}
                        <button style="width:32px;height:32px;border:none;background:${s.themeColor}22;color:${s.headerTextColor};border-radius:8px;cursor:pointer;font-size:14px;" onclick="changeMonth(-1)">‹</button>
                        <button style="width:32px;height:32px;border:none;background:${s.themeColor}22;color:${s.headerTextColor};border-radius:8px;cursor:pointer;font-size:14px;" onclick="changeMonth(1)">›</button>
                      </div>
@@ -685,7 +686,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:${s.dayTextColor};border-radius:50%;}
 .day.other-month{opacity:0.3;}
 .day.today{${s.highlightToday ? `background:${s.themeColor};color:${todayTextColor};font-weight:600;` : ''}}
-.today-btn-wrapper{display:${s.showTodayBtn ? 'flex' : 'none'};justify-content:center;margin-top:15px;padding-bottom:20px;}
+.today-btn-wrapper{display:${s.showTodayBtn && isModern ? 'flex' : 'none'};justify-content:center;margin-top:15px;padding-bottom:20px;}
 .today-btn{border:none;cursor:pointer;font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;background:${s.themeColor};color:${todayTextColor};font-family:inherit;transition:opacity 0.2s;}
 </style></head><body>
 <div class="calendar">
