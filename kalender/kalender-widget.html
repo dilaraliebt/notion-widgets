@@ -23,23 +23,51 @@
         .calendar {
             width: 100%;
             max-width: 350px;
-            border-radius: 16px;
-            overflow: hidden;
         }
 
-        .header {
+        /* === CLASSIC STYLE === */
+        .header-classic {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0;
+            margin-bottom: 20px;
         }
 
-        .month-year {
+        .month-year-classic {
             font-size: 18px;
             font-weight: 600;
         }
 
-        .nav-btn {
+        .nav-buttons-classic {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn-classic {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        /* === MODERN STYLE === */
+        .header-modern {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+            overflow: hidden;
+        }
+
+        .month-year-modern {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .nav-btn-modern {
             width: 32px;
             height: 32px;
             border: none;
@@ -50,6 +78,7 @@
             transition: background 0.2s;
         }
 
+        /* === GEMEINSAM === */
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -88,6 +117,7 @@
         .today-btn-wrapper {
             display: none;
             justify-content: center;
+            margin-top: 15px;
             padding-bottom: 20px;
         }
 
@@ -106,13 +136,10 @@
     </style>
 </head>
 <body>
-    <div class="calendar">
-        <div class="header" id="header">
-            <button class="nav-btn" id="nav-prev" onclick="changeMonth(-1)">‹</button>
-            <span class="month-year" id="month-year"></span>
-            <button class="nav-btn" id="nav-next" onclick="changeMonth(1)">›</button>
-        </div>
-        <div class="calendar-body">
+    <div class="calendar" id="calendar">
+        <!-- Header wird per JS gerendert -->
+        <div id="header-container"></div>
+        <div id="calendar-grid">
             <div class="weekdays" id="weekdays"></div>
             <div class="days" id="days"></div>
         </div>
@@ -125,13 +152,14 @@
         const params = new URLSearchParams(window.location.search);
 
         const settings = {
+            style: params.get('style') || 'classic',
             weekStart: 'monday',
             showTodayBtn: params.get('showTodayBtn') === 'true',
             highlightToday: params.get('highlightToday') !== 'false',
             showBorder: params.get('showBorder') === 'true',
             showNavigation: params.get('showNavigation') !== 'false',
             themeColor: params.get('themeColor') || '#F3D6DA',
-            headerTextColor: params.get('headerTextColor') || '#FFFFFF',
+            headerTextColor: params.get('headerTextColor') || '#37352F',
             dayTextColor: params.get('dayTextColor') || '#37352F',
             weekdayTextColor: params.get('weekdayTextColor') || '#718096',
             bgColor: params.get('bgColor') || '#FFFFFF',
@@ -140,35 +168,65 @@
 
         document.body.style.background = settings.bgColor;
 
-        const calendar = document.querySelector('.calendar');
+        const calendar = document.getElementById('calendar');
+
+        // Rahmen
         if (settings.showBorder) {
             calendar.style.border = `2px solid ${settings.themeColor}`;
+            calendar.style.borderRadius = '16px';
+            calendar.style.padding = '20px';
         }
 
-        const header = document.getElementById('header');
-        header.style.background = settings.themeColor;
-        header.style.padding = '10px 16px';
+        // Header je nach Stil rendern
+        const headerContainer = document.getElementById('header-container');
 
-        const monthYear = document.getElementById('month-year');
-        monthYear.style.color = settings.headerTextColor;
+        if (settings.style === 'modern') {
+            calendar.style.borderRadius = settings.showBorder ? '16px' : '16px';
+            calendar.style.overflow = 'hidden';
+            headerContainer.innerHTML = `
+                <div class="header-modern" id="header" style="background: ${settings.themeColor}; padding: 10px 16px;">
+                    <button class="nav-btn-modern" onclick="changeMonth(-1)" style="color: ${settings.headerTextColor};">‹</button>
+                    <span class="month-year-modern" id="month-year" style="color: ${settings.headerTextColor};"></span>
+                    <button class="nav-btn-modern" onclick="changeMonth(1)" style="color: ${settings.headerTextColor};">›</button>
+                </div>
+            `;
+            document.getElementById('calendar-grid').style.padding = '20px 20px 0';
 
-        if (!settings.showNavigation) {
-            document.getElementById('nav-prev').style.display = 'none';
-            document.getElementById('nav-next').style.display = 'none';
+            document.querySelectorAll('.nav-btn-modern').forEach(btn => {
+                btn.addEventListener('mouseover', () => btn.style.background = 'rgba(255,255,255,0.2)');
+                btn.addEventListener('mouseout', () => btn.style.background = 'transparent');
+            });
+
+        } else {
+            // Classic
+            headerContainer.innerHTML = `
+                <div class="header-classic" id="header">
+                    <span class="month-year-classic" id="month-year" style="color: ${settings.headerTextColor};"></span>
+                    <div class="nav-buttons-classic" id="nav-buttons" style="display: ${settings.showNavigation ? 'flex' : 'none'};">
+                        <button class="nav-btn-classic" onclick="changeMonth(-1)" style="background: ${settings.themeColor}22; color: ${settings.headerTextColor};">‹</button>
+                        <button class="nav-btn-classic" onclick="changeMonth(1)" style="background: ${settings.themeColor}22; color: ${settings.headerTextColor};">›</button>
+                    </div>
+                </div>
+            `;
+
+            document.querySelectorAll('.nav-btn-classic').forEach(btn => {
+                btn.addEventListener('mouseover', () => btn.style.background = settings.themeColor + '44');
+                btn.addEventListener('mouseout', () => btn.style.background = settings.themeColor + '22');
+            });
         }
 
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.style.color = settings.headerTextColor;
-            btn.addEventListener('mouseover', () => btn.style.background = 'rgba(255,255,255,0.2)');
-            btn.addEventListener('mouseout', () => btn.style.background = 'transparent');
-        });
+        // Navigation für Modern ausblenden
+        if (settings.style === 'modern' && !settings.showNavigation) {
+            document.querySelectorAll('.nav-btn-modern').forEach(btn => btn.style.display = 'none');
+        }
 
+        // Heute-Button
         const todayBtnWrapper = document.getElementById('today-btn-wrapper');
         const todayBtn = document.getElementById('today-btn');
         if (settings.showTodayBtn) {
             todayBtnWrapper.style.display = 'flex';
             todayBtn.style.background = settings.themeColor;
-            todayBtn.style.color = settings.headerTextColor;
+            todayBtn.style.color = settings.style === 'modern' ? settings.headerTextColor : (settings.darkMode ? '#191919' : '#FFFFFF');
         }
 
         let currentDate = new Date();
@@ -185,7 +243,7 @@
             const month = currentDate.getMonth();
             const today = new Date();
 
-            monthYear.textContent = months[month] + ' ' + year;
+            document.getElementById('month-year').textContent = months[month] + ' ' + year;
 
             document.getElementById('weekdays').innerHTML = weekdays.map(d =>
                 `<div class="weekday" style="color: ${settings.weekdayTextColor}">${d}</div>`
@@ -207,7 +265,8 @@
                 const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
                 let style = `color: ${settings.dayTextColor}`;
                 if (isToday && settings.highlightToday) {
-                    style = `background: ${settings.themeColor}; color: ${settings.headerTextColor}`;
+                    const todayTextColor = settings.style === 'modern' ? settings.headerTextColor : (settings.darkMode ? '#191919' : '#FFFFFF');
+                    style = `background: ${settings.themeColor}; color: ${todayTextColor}`;
                 }
                 html += `<div class="day${isToday ? ' today' : ''}" style="${style}">${day}</div>`;
             }
