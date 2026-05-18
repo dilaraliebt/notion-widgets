@@ -53,6 +53,16 @@
             transition: background 0.2s;
         }
 
+        .today-btn-classic {
+            margin-bottom: 15px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
         /* === MODERN STYLE === */
         .header-modern {
             display: flex;
@@ -77,6 +87,26 @@
             background: transparent;
             transition: background 0.2s;
         }
+
+        .today-btn-wrapper-modern {
+            display: none;
+            justify-content: center;
+            margin-top: 15px;
+            padding-bottom: 20px;
+        }
+
+        .today-btn-modern {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            transition: opacity 0.2s;
+        }
+
+        .today-btn-modern:hover { opacity: 0.8; }
 
         /* === GEMEINSAM === */
         .weekdays {
@@ -114,25 +144,6 @@
         .day.other-month { opacity: 0.3; }
         .day.today { font-weight: 600; }
 
-        .today-btn-wrapper {
-            display: none;
-            justify-content: center;
-            margin-top: 15px;
-            padding-bottom: 20px;
-        }
-
-        .today-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            font-family: inherit;
-            transition: opacity 0.2s;
-        }
-
-        .today-btn:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
